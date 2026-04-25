@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ToolsForStudents — AI Tools for Smarter Studying</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ── VARIABLES ── */
+:root{
+  --indigo:#4F46E5;
+  --indigo-light:#EEF2FF;
+  --indigo-mid:#818CF8;
+  --green:#22C55E;
+  --green-light:#F0FDF4;
+  --bg:#F8FAFC;
+  --white:#FFFFFF;
+  --text:#0F172A;
+  --text-2:#475569;
+  --text-3:#94A3B8;
+  --border:#E2E8F0;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:0 8px 24px rgba(0,0,0,0.08),0 4px 8px rgba(0,0,0,0.04);
+  --radius:12px;
+  --radius-lg:16px;
+  --radius-sm:8px;
+}
+
+/* ── UTILITIES ── */
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ── NAVBAR ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(248,250,252,0.9);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
+}
+.nav-logo{
+  font-size:17px;font-weight:700;color:var(--text);
+  text-decoration:none;display:flex;align-items:center;gap:8px;
+}
+.logo-dot{
+  width:28px;height:28px;background:var(--indigo);
+  border-radius:7px;display:flex;align-items:center;justify-content:center;
+}
+.logo-dot svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nav-right{display:flex;align-items:center;gap:12px}
+.btn-ghost{
+  font-size:14px;font-weight:500;color:var(--text-2);
+  background:none;border:none;cursor:pointer;padding:7px 14px;
+  border-radius:var(--radius-sm);transition:background 0.15s,color 0.15s;
+  font-family:'Inter',sans-serif;
+}
+.btn-ghost:hover{background:var(--border);color:var(--text)}
+.btn-primary{
+  font-size:14px;font-weight:600;color:#fff;
+  background:var(--indigo);border:none;cursor:pointer;
+  padding:8px 18px;border-radius:var(--radius-sm);
+  transition:opacity 0.15s,transform 0.12s;font-family:'Inter',sans-serif;
+}
+.btn-primary:hover{opacity:0.88;transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  padding:88px 0 72px;
+  text-align:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--indigo-light);color:var(--indigo);
+  font-size:12px;font-weight:600;letter-spacing:0.04em;
+  padding:5px 12px;border-radius:20px;margin-bottom:24px;
+}
+.hero-badge svg{width:13px;height:13px;fill:currentColor}
+h1{
+  font-size:clamp(36px,5vw,58px);font-weight:800;
+  line-height:1.1;letter-spacing:-0.03em;color:var(--text);
+  margin-bottom:16px;max-width:700px;margin-left:auto;margin-right:auto;
+}
+h1 span{color:var(--indigo)}
+.hero-sub{
+  font-size:17px;color:var(--text-2);line-height:1.65;
+  max-width:480px;margin:0 auto 36px;
+}
+.search-wrap{
+  max-width:580px;margin:0 auto 24px;position:relative;
+}
+.search-bar{
+  display:flex;align-items:center;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);padding:6px 6px 6px 16px;
+  box-shadow:var(--shadow-md);
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.search-bar:focus-within{
+  border-color:var(--indigo);
+  box-shadow:0 0 0 3px rgba(79,70,229,0.1),var(--shadow-md);
+}
+.search-icon{color:var(--text-3);display:flex;align-items:center;margin-right:10px;flex-shrink:0}
+.search-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.search-bar input{
+  flex:1;border:none;outline:none;font-family:'Inter',sans-serif;
+  font-size:15px;color:var(--text);background:transparent;
+}
+.search-bar input::placeholder{color:var(--text-3)}
+.search-btn{
+  background:var(--indigo);color:#fff;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  padding:10px 20px;border-radius:10px;transition:opacity 0.15s;white-space:nowrap;
+}
+.search-btn:hover{opacity:0.88}
+.cat-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.cat-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;color:var(--text-2);
+  background:var(--white);border:1px solid var(--border);
+  padding:6px 14px;border-radius:20px;cursor:pointer;
+  transition:all 0.15s;
+}
+.cat-tag:hover,.cat-tag.active{
+  background:var(--indigo-light);color:var(--indigo);border-color:rgba(79,70,229,0.25);
+}
+.cat-tag svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── SECTION SHARED ── */
+section{padding:72px 0}
+.section-label{
+  font-size:12px;font-weight:600;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--indigo);margin-bottom:8px;
+}
+h2{font-size:clamp(24px,3.5vw,34px);font-weight:800;letter-spacing:-0.02em;color:var(--text);line-height:1.2;margin-bottom:10px}
+.section-sub{font-size:16px;color:var(--text-2);max-width:480px}
+.section-header{margin-bottom:40px}
+.section-header.centered{text-align:center}
+.section-header.centered .section-sub{margin:0 auto}
+.see-all{
+  font-size:14px;font-weight:500;color:var(--indigo);
+  text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+  transition:gap 0.15s;
+}
+.see-all:hover{gap:7px}
+.section-header-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px}
+
+/* ── FEATURED TOOLS ── */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:16px;
+}
+.tool-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;
+  display:flex;gap:14px;align-items:flex-start;
+  box-shadow:var(--shadow);cursor:pointer;
+  transition:box-shadow 0.2s,transform 0.2s,border-color 0.2s;
+}
+.tool-card:hover{
+  box-shadow:var(--shadow-lg);transform:translateY(-2px);
+  border-color:rgba(79,70,229,0.2);
+}
+.tool-logo{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;border:1px solid var(--border);
+  background:var(--white);
+}
+.tool-info{flex:1;min-width:0}
+.tool-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.tool-name{font-size:15px;font-weight:600;color:var(--text)}
+.tool-badge{
+  font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;
+  white-space:nowrap;
+}
+.badge-writing{background:#EEF2FF;color:#4F46E5}
+.badge-coding{background:#FEF3C7;color:#92400E}
+.badge-research{background:#F0FDF4;color:#166534}
+.badge-productivity{background:#FDF4FF;color:#7E22CE}
+.badge-design{background:#FFF7ED;color:#9A3412}
+.badge-audio{background:#F0F9FF;color:#075985}
+.badge-resume{background:#FFF1F2;color:#9F1239}
+.tool-desc{font-size:13px;color:var(--text-2);line-height:1.5}
+.tool-link{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:500;color:var(--indigo);
+  text-decoration:none;margin-top:10px;
+  transition:gap 0.15s;
+}
+.tool-link:hover{gap:7px}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:var(--border);margin:0}
+
+/* ── CATEGORIES ── */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(172px,1fr));
+  gap:14px;
+}
+.cat-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;
+  cursor:pointer;transition:all 0.2s;
+  box-shadow:var(--shadow);
+}
+.cat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:rgba(79,70,229,0.2)}
+.cat-icon-wrap{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;font-size:20px;
+}
+.cat-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.cat-card p{font-size:12px;color:var(--text-3);line-height:1.5}
+
+/* ── BENEFITS ── */
+.benefits-section{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.benefits-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:40px;
+}
+.benefit-item{}
+.benefit-icon{
+  width:44px;height:44px;border-radius:10px;
+  background:var(--indigo-light);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+.benefit-icon svg{width:20px;height:20px;fill:none;stroke:var(--indigo);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.benefit-item h3{font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.01em}
+.benefit-item p{font-size:14px;color:var(--text-2);line-height:1.65}
+
+/* ── TRENDING ── */
+.trending-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:14px;
+}
+.trending-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;
+  cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow);
+}
+.trending-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.tc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tc-logo{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid var(--border)}
+.tc-new{
+  font-size:10px;font-weight:700;letter-spacing:0.06em;
+  text-transform:uppercase;background:var(--green-light);
+  color:var(--green);padding:3px 8px;border-radius:20px;
+}
+.trending-card h4{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.trending-card p{font-size:12px;color:var(--text-2);line-height:1.5;margin-bottom:10px}
+.tc-bottom{display:flex;align-items:center;justify-content:space-between}
+.tc-rating{font-size:12px;color:var(--text-3);display:flex;align-items:center;gap:4px}
+.star{color:#F59E0B}
+
+/* ── RESOURCES ── */
+.resources-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:16px;
+}
+.resource-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;
+  box-shadow:var(--shadow);transition:all 0.2s;
+}
+.resource-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.resource-img{
+  height:148px;display:flex;align-items:center;justify-content:center;
+  font-size:40px;font-weight:800;letter-spacing:-0.02em;
+}
+.resource-body{padding:18px}
+.resource-cat{
+  font-size:11px;font-weight:600;letter-spacing:0.06em;
+  text-transform:uppercase;color:var(--indigo);margin-bottom:8px;
+}
+.resource-card h4{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.35}
+.resource-card p{font-size:13px;color:var(--text-2);line-height:1.55;margin-bottom:12px}
+.resource-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-3)}
+.resource-meta span{display:flex;align-items:center;gap:4px}
+
+/* ── CTA ── */
+.cta-section{
+  background:#0F172A;padding:88px 0;text-align:center;
+}
+.cta-section h2{color:#fff;margin-bottom:12px}
+.cta-section p{font-size:16px;color:#94A3B8;margin-bottom:36px;max-width:400px;margin-left:auto;margin-right:auto}
+.email-row{
+  display:flex;max-width:420px;margin:0 auto;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius);overflow:hidden;
+  transition:border-color 0.2s;
+}
+.email-row:focus-within{border-color:rgba(79,70,229,0.6)}
+.email-row input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:'Inter',sans-serif;font-size:14px;color:#fff;padding:12px 16px;
+}
+.email-row input::placeholder{color:#475569}
+.email-row button{
+  background:var(--indigo);color:#fff;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  padding:12px 20px;transition:opacity 0.15s;white-space:nowrap;
+}
+.email-row button:hover{opacity:0.85}
+.cta-note{font-size:12px;color:#475569;margin-top:12px}
+
+/* ── FOOTER ── */
+footer{background:var(--white);border-top:1px solid var(--border);padding:56px 0 32px}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:48px;margin-bottom:48px;
+}
+.footer-brand .nav-logo{margin-bottom:12px;display:inline-flex}
+.footer-brand p{font-size:13px;color:var(--text-2);line-height:1.65;max-width:220px}
+.footer-col h5{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:13px;color:var(--text-2);text-decoration:none;transition:color 0.15s}
+.footer-col ul li a:hover{color:var(--indigo)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:24px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--text-3);
+}
+.footer-bottom-links{display:flex;gap:20px}
+.footer-bottom-links a{font-size:12px;color:var(--text-3);text-decoration:none;transition:color 0.15s}
+.footer-bottom-links a:hover{color:var(--text)}
+
+/* ── STATS BAR ── */
+.stats-bar{
+  background:var(--white);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:24px 0;
+}
+.stats-inner{
+  display:flex;align-items:center;justify-content:center;
+  gap:56px;flex-wrap:wrap;
+}
+.stat{text-align:center}
+.stat-num{font-size:26px;font-weight:800;color:var(--text);letter-spacing:-0.02em;line-height:1}
+.stat-lbl{font-size:12px;color:var(--text-3);margin-top:4px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1}
+  .nav-links-desktop{display:none}
+  h1{font-size:32px}
+  .benefits-grid{gap:28px}
+  .stats-inner{gap:32px}
+}
+@media(max-width:500px){
+  .footer-grid{grid-template-columns:1fr}
+  .tools-grid,.trending-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">
+        <div class="logo-dot">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        ToolsForStudents
+      </a>
+      <div class="nav-right">
+        <button class="btn-ghost">Log in</button>
+        <button class="btn-primary">Explore Tools</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      2,084 AI tools for students
+    </div>
+    <h1>Your AI toolkit for<br/><span>smarter studying</span></h1>
+    <p class="hero-sub">Discover the best AI tools for writing, coding, research, and productivity — all in one place, curated for students.</p>
+
+    <div class="search-wrap">
+      <div class="search-bar">
+        <div class="search-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <input type="text" placeholder="Search tools, e.g. 'essay writing', 'code helper'…" />
+        <button class="search-btn">Search</button>
+      </div>
+    </div>
+
+    <div class="cat-tags">
+      <div class="cat-tag active">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Writing
+      </div>
+      <div class="cat-tag">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Coding
+      </div>
+      <div class="cat-tag">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Resume
+      </div>
+      <div class="cat-tag">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Productivity
+      </div>
+      <div class="cat-tag">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Research
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat"><div class="stat-num">2,084</div><div class="stat-lbl">AI Tools Listed</div></div>
+      <div class="stat"><div class="stat-num">13</div><div class="stat-lbl">Categories</div></div>
+      <div class="stat"><div class="stat-num">60k+</div><div class="stat-lbl">Students monthly</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Free to browse</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURED TOOLS ── -->
+<section>
+  <div class="container">
+    <div class="section-header-row">
+      <div>
+        <p class="section-label">Featured Tools</p>
+        <h2>Everyone's using these</h2>
+        <p class="section-sub" style="margin-top:6px">Hand-picked tools loved by students worldwide.</p>
+      </div>
+      <a href="#" class="see-all">View all tools →</a>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card">
+        <div class="tool-logo">🤖</div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <span class="tool-name">ChatGPT</span>
+            <span class="tool-badge badge-writing">Writing</span>
+          </div>
+          <p class="tool-desc">AI assistant for essays, explanations, brainstorming, and Q&A.</p>
+          <a href="#" class="tool-link">Try free →</a>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-logo">🎨</div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <span class="tool-name">Midjourney</span>
+            <span class="tool-badge badge-design">Design</span>
+          </div>
+          <p class="tool-desc">Generate stunning images for presentations and projects.</p>
+          <a href="#" class="tool-link">Try free →</a>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-logo">💻</div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <span class="tool-name">GitHub Copilot</span>
+            <span class="tool-badge badge-coding">Coding</span>
+          </div>
+          <p class="tool-desc">AI pair programmer that autocompletes and explains your code.</p>
+          <a href="#" class="tool-link">Get started →</a>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-logo">🔍</div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <span class="tool-name">Perplexity AI</span>
+            <span class="tool-badge badge-research">Research</span>
+          </div>
+          <p class="tool-desc">Real-time AI search with cited sources — perfect for research.</p>
+          <a href="#" class="tool-link">Try free →</a>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-logo">📝</div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <span class="tool-name">Notion AI</span>
+            <span class="tool-badge badge-productivity">Productivity</span>
+          </div>
+          <p class="tool-desc">Write, summarize notes, and manage your study plans with AI.</p>
+          <a href="#" class="tool-link">Try free →</a>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-logo">✍️</div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <span class="tool-name">Grammarly</span>
+            <span class="tool-badge badge-writing">Writing</span>
+          </div>
+          <p class="tool-desc">Fix grammar, improve clarity, and polish any piece of writing.</p>
+          <a href="#" class="tool-link">Try free →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CATEGORIES ── -->
+<section>
+  <div class="container">
+    <div class="section-header centered">
+      <p class="section-label">Browse by Category</p>
+      <h2>Find tools for every task</h2>
+      <p class="section-sub" style="margin-top:6px">From writing essays to building apps — we have the right AI tool for you.</p>
+    </div>
+    <div class="cat-grid">
+
+      <div class="cat-card">
+        <div class="cat-icon-wrap" style="background:#EEF2FF">✍️</div>
+        <h4>Writing</h4>
+        <p>ChatGPT, Jasper, Grammarly, Copy.ai</p>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-icon-wrap" style="background:#FEF3C7">💻</div>
+        <h4>Coding</h4>
+        <p>Copilot, Cursor, Replit, Codeium</p>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-icon-wrap" style="background:#FFF7ED">🎨</div>
+        <h4>Design</h4>
+        <p>Midjourney, Canva AI, Firefly, DALL·E</p>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-icon-wrap" style="background:#F0F9FF">🎙️</div>
+        <h4>Audio</h4>
+        <p>ElevenLabs, Suno, Whisper, Murf</p>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-icon-wrap" style="background:#FDF4FF">📊</div>
+        <h4>Productivity</h4>
+        <p>Notion AI, Motion, Reclaim, Mem</p>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-icon-wrap" style="background:#F0FDF4">🔬</div>
+        <h4>Research</h4>
+        <p>Perplexity, Consensus, Elicit, Semantic</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── BENEFITS ── -->
+<section class="benefits-section">
+  <div class="container">
+    <div class="section-header centered">
+      <p class="section-label">Why ToolsForStudents</p>
+      <h2>Built to help you succeed</h2>
+    </div>
+    <div class="benefits-grid">
+
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Save hours every week</h3>
+        <p>Stop spending 3 hours Googling. Find the right AI tool for any task in under 30 seconds and get back to what matters — actually learning.</p>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <h3>Learn faster, understand more</h3>
+        <p>AI tutors, summarizers, and explainers make dense material approachable. Go from confused to confident in any subject.</p>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Build real projects faster</h3>
+        <p>From your first app to your final portfolio, AI coding tools help you ship work you're actually proud of — even as a beginner.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── TRENDING ── -->
+<section>
+  <div class="container">
+    <div class="section-header-row">
+      <div>
+        <p class="section-label">Trending This Week</p>
+        <h2>New &amp; hot tools 🔥</h2>
+      </div>
+      <a href="#" class="see-all">View all new →</a>
+    </div>
+    <div class="trending-grid">
+
+      <div class="trending-card">
+        <div class="tc-top">
+          <div class="tc-logo">🧠</div>
+          <span class="tc-new">New</span>
+        </div>
+        <h4>Claude AI</h4>
+        <p>Anthropic's flagship model — incredible for nuanced writing and analysis.</p>
+        <div class="tc-bottom">
+          <span class="tool-badge badge-writing">Writing</span>
+          <span class="tc-rating"><span class="star">★</span> 4.9 · Free tier</span>
+        </div>
+      </div>
+
+      <div class="trending-card">
+        <div class="tc-top">
+          <div class="tc-logo">🎥</div>
+          <span class="tc-new">Hot</span>
+        </div>
+        <h4>Runway Gen-3</h4>
+        <p>Create cinematic video clips from text — used for project presentations.</p>
+        <div class="tc-bottom">
+          <span class="tool-badge badge-design">Design</span>
+          <span class="tc-rating"><span class="star">★</span> 4.8 · Paid</span>
+        </div>
+      </div>
+
+      <div class="trending-card">
+        <div class="tc-top">
+          <div class="tc-logo">🎵</div>
+          <span class="tc-new">New</span>
+        </div>
+        <h4>Suno AI</h4>
+        <p>Generate full songs with vocals from a text prompt — fun for projects.</p>
+        <div class="tc-bottom">
+          <span class="tool-badge badge-audio">Audio</span>
+          <span class="tc-rating"><span class="star">★</span> 4.8 · Free tier</span>
+        </div>
+      </div>
+
+      <div class="trending-card">
+        <div class="tc-top">
+          <div class="tc-logo">📖</div>
+          <span class="tc-new">Hot</span>
+        </div>
+        <h4>Consensus</h4>
+        <p>Search peer-reviewed papers and get AI-summarized findings instantly.</p>
+        <div class="tc-bottom">
+          <span class="tool-badge badge-research">Research</span>
+          <span class="tc-rating"><span class="star">★</span> 4.7 · Free tier</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── RESOURCES ── -->
+<section>
+  <div class="container">
+    <div class="section-header-row">
+      <div>
+        <p class="section-label">Resources</p>
+        <h2>Guides &amp; tutorials</h2>
+        <p class="section-sub" style="margin-top:6px">Learn how to use AI tools to level up your studies.</p>
+      </div>
+      <a href="#" class="see-all">View all guides →</a>
+    </div>
+    <div class="resources-grid">
+
+      <div class="resource-card">
+        <div class="resource-img" style="background:#EEF2FF;color:#4F46E5">AI ✍️</div>
+        <div class="resource-body">
+          <p class="resource-cat">Writing</p>
+          <h4>How to write a 2,000-word essay in 30 minutes with AI</h4>
+          <p>A step-by-step workflow using ChatGPT and Grammarly that actually works — without plagiarizing.</p>
+          <div class="resource-meta">
+            <span>📖 5 min read</span>
+            <span>🕐 Apr 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-img" style="background:#FEF3C7;color:#92400E">Code 💻</div>
+        <div class="resource-body">
+          <p class="resource-cat">Coding</p>
+          <h4>Best AI coding tools for beginners (compared)</h4>
+          <p>Copilot vs Cursor vs Replit AI — which one actually helps students learn to code?</p>
+          <div class="resource-meta">
+            <span>📖 7 min read</span>
+            <span>🕐 Apr 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-img" style="background:#F0FDF4;color:#166534">📚 AI</div>
+        <div class="resource-body">
+          <p class="resource-cat">Research</p>
+          <h4>How students are using Perplexity to write better research papers</h4>
+          <p>A practical guide to finding peer-reviewed sources fast and citing them correctly with AI help.</p>
+          <div class="resource-meta">
+            <span>📖 6 min read</span>
+            <span>🕐 Mar 2025</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="container">
+    <p class="section-label" style="color:#6366F1;text-align:center">Stay in the loop</p>
+    <h2 style="color:#fff;text-align:center">Don't miss the best AI tools<br/>every week</h2>
+    <p>Every Monday — new tools, student guides, and AI tips. Zero spam. Just the good stuff.</p>
+    <div class="email-row">
+      <input type="email" placeholder="your@email.com" />
+      <button>Subscribe →</button>
+    </div>
+    <p class="cta-note">Join 12,000+ students. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a class="nav-logo" href="#">
+          <div class="logo-dot">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          ToolsForStudents
+        </a>
+        <p>The internet's best directory of AI tools, curated for students. Updated daily. Free forever.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="#">All Tools</a></li>
+          <li><a href="#">New This Week</a></li>
+          <li><a href="#">Top Rated</a></li>
+          <li><a href="#">Free Tools</a></li>
+          <li><a href="#">Student Picks</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <ul>
+          <li><a href="#">Writing</a></li>
+          <li><a href="#">Coding</a></li>
+          <li><a href="#">Design</a></li>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Productivity</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Submit a Tool</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ToolsForStudents. Made for students, by students.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Category tag toggle
+document.querySelectorAll('.cat-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+  });
+});
+// Cat card hover accent
+document.querySelectorAll('.cat-card').forEach(card => {
+  card.addEventListener('mouseenter', () => card.style.borderColor = 'rgba(79,70,229,0.2)');
+  card.addEventListener('mouseleave', () => card.style.borderColor = '');
+});
+</script>
+</body>
+</html>
